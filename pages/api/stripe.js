@@ -1,4 +1,3 @@
-import React from "react";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
@@ -12,7 +11,7 @@ export default async function handler(req, res) {
         payment_method_types: ["card"],
         billing_address_collection: "auto",
         shipping_options: [
-          { shipping_rate: "shr_1MSLydFxCmeumcPbPXKHREI2" },
+          { shipping_rate: "shr_1MSP2cFxCmeumcPbAC02Y8pg" },
           ,
         ],
         line_items: req.body.map((item) => {
@@ -26,7 +25,7 @@ export default async function handler(req, res) {
 
           return {
             price_data: {
-              currency: "EUR",
+              currency: "usd",
               product_data: {
                 name: item.name,
                 images: [newImage],
@@ -40,8 +39,8 @@ export default async function handler(req, res) {
             quantity: item.quantity,
           };
         }),
-        success_url: `${req.headers.origin}/?success=true`,
-        cancel_url: `${req.headers.origin}/canceled`,
+        success_url: `${req.headers.origin}/success`,
+        cancel_url: `${req.headers.origin}/?canceled=true`,
       };
 
       // Create Checkout Sessions from body params.
